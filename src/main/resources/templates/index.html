@@ -7,29 +7,44 @@
 <title>Hello B5235</title>
 </head>
 <body>
-	<button onclick="getLocation()">获取当前位置</button>
+	<button onclick="showloc()">获取当前位置</button>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script th:src="@{js/jquery.min.js}"></script>
 <script>
+	var loc;
+
+	function showloc() {
+	  location.assign('showloc');
+	}
+	
+	function openLocation() {
+	  if (loc) {
+	    wx.openLocation({
+		    latitude: loc.latitude,
+		    longitude: loc.longitude,
+		    name: '毛楼',
+		    address: '滨江区海创园五楼高级毛楼',
+		    scale: 14,
+		    infoUrl: ''
+			});
+	  }
+	}
+	
 	wx.ready(function() {
 	  console.log('wx js ready');
 	  wx.getLocation({
 	    type: 'wgs84',
 	    success: function (res) {
-	    	console.log(res);
-	      var latitude = res.latitude;
-	      var longitude = res.longitude;
-	      var speed = res.speed;
-	      var accuracy = res.accuracy;
+	    	loc = res;
 	    }
 		});
 	});
 
-	+function init() {
+	function init() {
 	  $.get('wx/signature', function(signature) {
 	    wx.config(signature);
 	  });
-	}();
+	}
 </script>
 </html>

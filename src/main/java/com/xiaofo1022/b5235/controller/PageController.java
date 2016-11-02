@@ -10,4 +10,9 @@ public class PageController {
   public String index() {
     return "index";
   }
+  
+  @RequestMapping("/showloc")
+  public String showloc() {
+    return "showloc";
+  }
 }
