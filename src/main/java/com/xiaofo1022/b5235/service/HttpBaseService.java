@@ -44,7 +44,7 @@ public class HttpBaseService {
     return jsonResult;
   }
   
-  private String getRequestUrl(String url, Object... args) {
+  public String getRequestUrl(String url, Object... args) {
     return String.format(url, args);
   }
   

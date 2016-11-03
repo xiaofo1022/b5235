@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<link th:href="@{css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{css/sweetalert.css}" rel="stylesheet" />
+<link th:href="@{css/common.css}" rel="stylesheet" />
+<style>
+	.popover-title {
+		background-color: #fff;
+	}
+	
+	.sheader {
+		width: 60px;
+		height: 60px;
+		border-radius: 30px;
+		position: absolute;
+		top: 73px;
+	}
+</style>
+<title>Small Report</title>
+</head>
+<body style="margin:10px;">
+<div style="position:relative;">
+	<img id="header" class="sheader" 
+		src="http://shp.qpic.cn/bizmp/Ce263YhTIZVu0x6SnicHGUG0agMdO0Njxiar7XE1864zicox8ErF9ibG3w/"
+		data-toggle="popover" title=" " data-content=" "/>
+</div>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/bootstrap.min.js}"></script>
+<script th:src="@{js/sweetalert.min.js}"></script>
+<script th:src="@{js/sreport.js}"></script>
+</html>

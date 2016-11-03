@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+.fbold {
+	font-weight:bold;
+}
+
+a:hover {
+	cursor:pointer;
+}
+
+.clearfix:after {
+	content:"";
+	clear:both;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.fleft {
+	float:left;
+}
+
+.fright {
+	float:right;
+}
+
+.status-waiting {
+	color: rgb(193, 193, 193);
+}
+
+.status-sending {
+	color: rgb(71, 175, 212);
+}
+
+.status-success {
+	color: rgb(73, 171, 68);
+}
+
+.status-failure {
+	color: rgb(208, 59, 59);
+}
+
+.status-stop {
+	color: rgb(193, 193, 193);
+}

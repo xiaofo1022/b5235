@@ -7,7 +7,8 @@
 <title>Hello B5235</title>
 </head>
 <body>
-	<button onclick="showloc()">获取当前位置</button>
+	<button onclick="showloc()">Show Location</button>
+	<button onclick="sreport()">S Report</button>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script th:src="@{js/jquery.min.js}"></script>
@@ -16,6 +17,10 @@
 
 	function showloc() {
 	  location.assign('showloc');
+	}
+	
+	function sreport() {
+	  location.assign('sreport');
 	}
 	
 	function openLocation() {

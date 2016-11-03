@@ -13,6 +13,7 @@ public class WeixinBaseService {
   private static final String GET_USER_INFO_URL = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=%s&code=%s";
   private static final String GET_USER_URL = "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=%s&userid=%s";
   private static final String GET_JS_TICKET_URL = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=%s";
+  private static final String GET_CODE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect";
   
   @Autowired
   private HttpBaseService http;
@@ -25,7 +26,7 @@ public class WeixinBaseService {
     return null;
   } 
   
-  public String getLoginUserId(String token, String code) {
+  public String getLoginUserId(String code, String token) {
     JSONObject result = http.get(GET_USER_INFO_URL, token, code);
     if (result != null && result.has("UserId")) {
       return result.getString("UserId");
@@ -48,5 +49,9 @@ public class WeixinBaseService {
       return result.getString("ticket");
     }
     return null;
+  }
+  
+  public String getLoginRedirectUrl(String corpId, String redirectUri) {
+    return http.getRequestUrl(GET_CODE_URL, corpId, redirectUri, corpId);
   }
 }

@@ -15,4 +15,9 @@ public class PageController {
   public String showloc() {
     return "showloc";
   }
+  
+  @RequestMapping("/sreport")
+  public String sreport() {
+    return "sreport";
+  }
 }
