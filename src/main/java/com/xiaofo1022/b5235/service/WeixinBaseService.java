@@ -11,6 +11,7 @@ import com.xiaofo1022.b5235.model.Articles;
 import com.xiaofo1022.b5235.model.NewsMessage;
 import com.xiaofo1022.b5235.model.TextMessage;
 import com.xiaofo1022.b5235.model.WeixinUser;
+import com.xiaofo1022.b5235.util.AppProperties;
 
 @Service
 public class WeixinBaseService {
@@ -25,6 +26,8 @@ public class WeixinBaseService {
   
   @Autowired
   private HttpBaseService http;
+  @Autowired
+  private AppProperties appProperties;
   
   public String getAccessToken(String corpId, String corpSecret) {
     JSONObject result = http.get(GET_TOKEN_URL, corpId, corpSecret);
@@ -71,14 +74,13 @@ public class WeixinBaseService {
     http.doPost(SEND_MESSAGE_URL, textMessage, token);
   }
   
-  private static final String SHOW_WX_MAP_URL = "http://dev.nbugs.com/yc/b5235/wxmap?reportid=";
-  
   public void sendNewsMessage(long reportId, String title, String description, String token) {
     List<Articles> articlesList = new ArrayList<>();
     Articles articles = new Articles();
     articles.title = title;
     articles.description = description;
-    articles.url = SHOW_WX_MAP_URL + reportId;
+    articles.url = appProperties.getShowmap() + reportId;
+    System.out.println(articles.url);
     articlesList.add(articles);
     NewsMessage newsMessage = new NewsMessage();
     newsMessage.setAgentid(SREPORT_AGENT_ID);

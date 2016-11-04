@@ -38,9 +38,12 @@
 	  <div class="panel-body">
 	    <div class="clearfix">
 	    	<span class="fleft">我在: </span>
-	    	<input id="report-address" class="form-control" />
-	    	<textarea id="report-info" class="form-control" style="margin-top:10px;" rows="4" placeholder="做什么?"></textarea>
-	    	<button id="btn-post" class="btn btn-success fright" style="margin-top:10px;" onclick="postReport()">发布</button>
+	    	<input id="report-address" class="form-control" maxlength="99" />
+	    	<textarea id="report-info" class="form-control" style="margin-top:10px;margin-bottom:10px;" rows="4" maxlength="999" placeholder="做什么?"></textarea>
+	    	<img id="img-selected" style="width:100%;margin-bottom:10px;display:none;" />
+	    	<button id="btn-select-image" class="btn btn-info fleft" onclick="selectImage()">附加图片</button>
+	    	<button id="btn-post" class="btn btn-success fright" onclick="postReport()">发布</button>
+	   		<img id="img-selected" style="width:100%;margin-top:10px;" />
 	   	</div>
 	  </div>
 	</div>

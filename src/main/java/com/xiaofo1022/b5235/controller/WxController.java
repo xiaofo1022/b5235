@@ -25,10 +25,11 @@ public class WxController {
   private WeixinApiService weixinApi;
   
   @RequestMapping("/signature")
-  public WeixinSignature getWeixinSignature(HttpServletRequest request) throws Exception {
+  public WeixinSignature getWeixinSignature(@RequestParam(value = "debug", defaultValue = "false") String debug, HttpServletRequest request) throws Exception {
     WeixinToken weixinToken = weixinApi.getWeixinToken();
     String sourceUrl = request.getHeader("Referer");
-    return weixinApi.getWeixinSignature(weixinToken, sourceUrl);
+    boolean isDebug = debug.equals("true");
+    return weixinApi.getWeixinSignature(weixinToken, sourceUrl, isDebug);
   }
   
   @RequestMapping("/login")

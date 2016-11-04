@@ -50,8 +50,8 @@ public class WeixinApiService {
     return weixinToken;
   }
   
-  public WeixinSignature getWeixinSignature(WeixinToken weixinToken, String sourceUrl) throws Exception {
-    WeixinSignature weixinSignature = new WeixinSignature(CORP_ID);
+  public WeixinSignature getWeixinSignature(WeixinToken weixinToken, String sourceUrl, boolean debug) throws Exception {
+    WeixinSignature weixinSignature = new WeixinSignature(CORP_ID, debug);
     String signature = SignatureUtil.getSignature(weixinToken.getJsTicket(), weixinSignature.getNonceStr(), weixinSignature.getTimestamp(), sourceUrl);
     weixinSignature.setSignature(signature);
     return weixinSignature;

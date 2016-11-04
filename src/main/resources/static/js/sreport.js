@@ -8,6 +8,7 @@ var currentLoc;
 var currentAddress;
 var currentTime;
 var gcjLocation;
+var currentImageServerId;
 
 window.onload = loadScript;
 
@@ -107,6 +108,9 @@ function postReport() {
     report.gcjLng = gcjLocation.longitude;
     report.reportAddress = $('#report-address').val();
     report.reportInfo = reportInfo;
+    if (currentImageServerId) {
+      report.reportImgServerId = currentImageServerId;
+    }
     AjaxUtil.post('report/post', report, function(result) {
       wx.closeWindow();
     });
@@ -121,4 +125,31 @@ function getRequestParam(name) {
   if (r != null)
     return unescape(r[2]);
   return '';
+}
+
+function selectImage() {
+  wx.chooseImage({
+    count: 1,
+    sizeType: ['original', 'compressed'],
+    sourceType: ['album', 'camera'],
+    success: function (res) {
+      var localIds = res.localIds;
+      var firstImageId = localIds[0];
+      if (firstImageId) {
+        $('#img-selected').attr('src', firstImageId);
+        $('#img-selected').show();
+        uploadImage(firstImageId);
+      }
+    }
+  });
+}
+
+function uploadImage(firstImageId) {
+  wx.uploadImage({
+    localId: firstImageId,
+    isShowProgressTips: 1,
+    success: function (res) {
+      currentImageServerId = res.serverId;
+    }
+  });
 }

@@ -23,6 +23,7 @@ public class SReport {
   private String reportLng;
   private String reportAddress;
   private String reportInfo;
+  private String reportImgServerId;
   private String gcjLat;
   private String gcjLng;
   private int isActive = 1;
@@ -104,5 +105,11 @@ public class SReport {
   }
   public void setGcjLng(String gcjLng) {
     this.gcjLng = gcjLng;
+  }
+  public String getReportImgServerId() {
+    return reportImgServerId;
+  }
+  public void setReportImgServerId(String reportImgServerId) {
+    this.reportImgServerId = reportImgServerId;
   }
 }
