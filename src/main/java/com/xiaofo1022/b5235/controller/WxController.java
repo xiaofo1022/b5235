@@ -46,7 +46,6 @@ public class WxController {
       String wxUserId = CookieUtil.getCookieValue(CookieUtil.WX_USER_COOKIE_NAME, request);
       if (wxUserId != null && !wxUserId.equals("")) {
         WeixinUser weixinUser = weixinApi.getLoginUser(wxUserId);
-        System.out.println(weixinUser.getAvatar());
         return new LoginResult(weixinUser);
       } else {
         return new LoginResult(302, "", weixinApi.getLoginRedirectUrl(request));

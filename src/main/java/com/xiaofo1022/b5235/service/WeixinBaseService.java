@@ -1,9 +1,15 @@
 package com.xiaofo1022.b5235.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xiaofo1022.b5235.model.Articles;
+import com.xiaofo1022.b5235.model.NewsMessage;
+import com.xiaofo1022.b5235.model.TextMessage;
 import com.xiaofo1022.b5235.model.WeixinUser;
 
 @Service
@@ -14,6 +20,8 @@ public class WeixinBaseService {
   private static final String GET_USER_URL = "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=%s&userid=%s";
   private static final String GET_JS_TICKET_URL = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=%s";
   private static final String GET_CODE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect";
+  private static final String SEND_MESSAGE_URL = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s";
+  private static final int SREPORT_AGENT_ID = 25;
   
   @Autowired
   private HttpBaseService http;
@@ -53,5 +61,29 @@ public class WeixinBaseService {
   
   public String getLoginRedirectUrl(String corpId, String redirectUri) {
     return http.getRequestUrl(GET_CODE_URL, corpId, redirectUri, corpId);
+  }
+  
+  public void sendTextMessage(String content, String token) {
+    TextMessage textMessage = new TextMessage();
+    textMessage.setAgentid(SREPORT_AGENT_ID);
+    textMessage.setTouser("@all");
+    textMessage.setContent(content);
+    http.doPost(SEND_MESSAGE_URL, textMessage, token);
+  }
+  
+  private static final String SHOW_WX_MAP_URL = "http://dev.nbugs.com/yc/b5235/wxmap?reportid=";
+  
+  public void sendNewsMessage(long reportId, String title, String description, String token) {
+    List<Articles> articlesList = new ArrayList<>();
+    Articles articles = new Articles();
+    articles.title = title;
+    articles.description = description;
+    articles.url = SHOW_WX_MAP_URL + reportId;
+    articlesList.add(articles);
+    NewsMessage newsMessage = new NewsMessage();
+    newsMessage.setAgentid(SREPORT_AGENT_ID);
+    newsMessage.setArticles(articlesList);
+    newsMessage.setTouser("@all");
+    http.doPost(SEND_MESSAGE_URL, newsMessage, token);
   }
 }

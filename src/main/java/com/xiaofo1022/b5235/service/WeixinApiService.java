@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xiaofo1022.b5235.entity.SReport;
 import com.xiaofo1022.b5235.model.WeixinSignature;
 import com.xiaofo1022.b5235.model.WeixinToken;
 import com.xiaofo1022.b5235.model.WeixinUser;
@@ -50,7 +51,7 @@ public class WeixinApiService {
   }
   
   public WeixinSignature getWeixinSignature(WeixinToken weixinToken, String sourceUrl) throws Exception {
-    WeixinSignature weixinSignature = new WeixinSignature(CORP_ID, true);
+    WeixinSignature weixinSignature = new WeixinSignature(CORP_ID);
     String signature = SignatureUtil.getSignature(weixinToken.getJsTicket(), weixinSignature.getNonceStr(), weixinSignature.getTimestamp(), sourceUrl);
     weixinSignature.setSignature(signature);
     return weixinSignature;
@@ -76,5 +77,22 @@ public class WeixinApiService {
     String originUrl = request.getHeader("Referer");
     String encodeUrl = URLEncoder.encode(originUrl, "utf-8");
     return weixinBaseService.getLoginRedirectUrl(CORP_ID, encodeUrl);
+  }
+  
+  public void sendTextMessage(SReport report) {
+    WeixinToken weixinToken = getWeixinToken();
+    if (weixinToken != null) {
+      String content = report.getWxUserName() + "正在" + report.getReportAddress() + ": " + report.getReportInfo();
+      weixinBaseService.sendTextMessage(content, weixinToken.getAccessToken());
+    }
+  }
+  
+  public void sendNewsMessage(SReport report) {
+    WeixinToken weixinToken = getWeixinToken();
+    if (weixinToken != null) {
+      String title = report.getWxUserName() + "正在";
+      String description = report.getReportAddress() + ": " + report.getReportInfo();
+      weixinBaseService.sendNewsMessage(report.getId(), title, description, weixinToken.getAccessToken());
+    }
   }
 }

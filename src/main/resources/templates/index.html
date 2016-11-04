@@ -35,21 +35,5 @@
 			});
 	  }
 	}
-	
-	wx.ready(function() {
-	  console.log('wx js ready');
-	  wx.getLocation({
-	    type: 'wgs84',
-	    success: function (res) {
-	    	loc = res;
-	    }
-		});
-	});
-
-	function init() {
-	  $.get('wx/signature', function(signature) {
-	    wx.config(signature);
-	  });
-	}
 </script>
 </html>

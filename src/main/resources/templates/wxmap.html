@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<link th:href="@{css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{css/sweetalert.css}" rel="stylesheet" />
+<link th:href="@{css/common.css}" rel="stylesheet" />
+<title>小地图</title>
+</head>
+<body style="margin:10px;">
+<div id="loading-bar" class="progress">
+  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span>加载中...</span>
+  </div>
+</div>
+<button id="btn-open-map" style="display:none;width:100%;" class="btn btn-success" onclick="openMap()">打开地图</button>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/wxmap.js}"></script>
+</html>

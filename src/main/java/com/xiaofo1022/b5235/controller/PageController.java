@@ -20,4 +20,9 @@ public class PageController {
   public String sreport() {
     return "sreport";
   }
+  
+  @RequestMapping("/wxmap")
+  public String wxmap() {
+    return "wxmap";
+  }
 }

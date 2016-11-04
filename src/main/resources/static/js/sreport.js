@@ -2,14 +2,25 @@
  * Js for sreport
  */
 
+var isMapLoaded = false;
 var loginUser;
+var currentLoc;
+var currentAddress;
+var currentTime;
+var gcjLocation;
 
-+function init() {
-  $('#header').popover('show');
-  $('.popover-title').html('2016-11-03 16:32 <br/> I am in: Binjiang Maolou');
-  $('.popover-content').html('<div class="clearfix"><textarea class="form-control" rows="4" placeholder="Do?"></textarea><button class="btn btn-success fright" style="margin-top:10px;">publish</button></div>');
-  $('.popover').css('top', '0px');
-}();
+window.onload = loadScript;
+
+function loadScript() {
+  var script = document.createElement("script");  
+  script.src = "http://api.map.baidu.com/api?v=2.0&ak=UCzsRGmGVrC0pyjc7GYd5osebsWEHSHc&callback=maploaded";
+  document.body.appendChild(script);
+}
+
+function maploaded() {
+  isMapLoaded = true;
+  dologin();
+}
 
 function dologin() {
   var code = getRequestParam('code');
@@ -19,10 +30,89 @@ function dologin() {
         location.assign(result.data);
       } else {
         loginUser = result.data;
-        $('#header').attr('src', loginUser.avatar);
+        initWxApi();
       }
     }
   });
+}
+
+function initWxApi() {
+  wx.ready(function() {
+    getGcjLocation();
+  });
+  $.get('wx/signature', function(signature) {
+    wx.config(signature);
+  });
+}
+
+function getGcjLocation() {
+  wx.getLocation({
+    type: 'gcj02',
+    success: function (res) {
+      gcjLocation = res;
+      getCommonLocation();
+    }
+  });
+}
+
+function getCommonLocation() {
+  wx.getLocation({
+    type: 'wgs84',
+    success: function (res) {
+      currentLoc = res;
+      getAddress();
+    }
+  });
+}
+
+function getAddress() {
+  var convertor = new BMap.Convertor();
+  var pointArr = [];
+  var ggPoint = new BMap.Point(currentLoc.longitude, currentLoc.latitude);
+  pointArr.push(ggPoint);
+  convertor.translate(pointArr, 1, 5, function (data) {
+    if (data.status === 0) {
+      var pt = data.points[0];
+      var geoc = new BMap.Geocoder();
+      geoc.getLocation(pt, function(rs) {
+        currentAddress = rs.address;
+        initDialog();
+      });
+    }
+  });
+}
+
+function initDialog() {
+  currentTime = new Date();
+  var currentTimeLabel = currentTime.format("yyyy年M月d日 h点m分s秒");
+  $('#header').attr('src', loginUser.avatar);
+  $('#dialog-title').html(currentTimeLabel);
+  $('#report-address').val(currentAddress);
+  $('#loading-bar').hide();
+  $('#report-dialog').show();
+}
+
+function postReport() {
+  var reportInfo = $('#report-info').val();
+  if (reportInfo) {
+    $('#btn-post').attr('disabled', 'disabled');
+    $('#btn-post').text('发布中...');
+    var report = {};
+    report.wxUserId = loginUser.userid;
+    report.wxUserName = loginUser.name;
+    report.reportDate = currentTime;
+    report.reportLat = currentLoc.latitude;
+    report.reportLng = currentLoc.longitude;
+    report.gcjLat = gcjLocation.latitude;
+    report.gcjLng = gcjLocation.longitude;
+    report.reportAddress = $('#report-address').val();
+    report.reportInfo = reportInfo;
+    AjaxUtil.post('report/post', report, function(result) {
+      wx.closeWindow();
+    });
+  } else {
+    wx.closeWindow();
+  }
 }
 
 function getRequestParam(name) {
