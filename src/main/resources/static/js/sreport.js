@@ -3,7 +3,6 @@
  */
 
 var isMapLoaded = false;
-var loginUser;
 var currentLoc;
 var currentAddress;
 var currentTime;
@@ -23,18 +22,8 @@ function maploaded() {
   dologin();
 }
 
-function dologin() {
-  var code = getRequestParam('code');
-  $.get('wx/login?code=' + code, function(result) {
-    if (result) {
-      if (result.code == 302) {
-        location.assign(result.data);
-      } else {
-        loginUser = result.data;
-        initWxApi();
-      }
-    }
-  });
+function loginCallback() {
+  initWxApi();
 }
 
 function initWxApi() {
@@ -118,14 +107,6 @@ function postReport() {
     swal('说点什么吧~');
     $('#report-info').focus();
   }
-}
-
-function getRequestParam(name) {
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-  var r = window.location.search.substr(1).match(reg);
-  if (r != null)
-    return unescape(r[2]);
-  return '';
 }
 
 function selectImage() {

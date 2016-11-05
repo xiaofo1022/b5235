@@ -3,22 +3,13 @@
  */
 
 var report;
-var loginUser;
 var replyUserId;
 
-+function dologin() {
-  var code = getRequestParam('code');
-  $.get('wx/login?code=' + code, function(result) {
-    if (result) {
-      if (result.code == 302) {
-        location.assign(result.data);
-      } else {
-        loginUser = result.data;
-        initWxApi();
-      }
-    }
-  });
-}();
+dologin();
+
+function loginCallback() {
+  initWxApi();
+}
 
 function initWxApi() {
   wx.ready(function() {

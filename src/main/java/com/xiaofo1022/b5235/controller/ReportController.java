@@ -2,18 +2,21 @@ package com.xiaofo1022.b5235.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaofo1022.b5235.dao.SReportDao;
 import com.xiaofo1022.b5235.entity.SReport;
 import com.xiaofo1022.b5235.service.WeixinApiService;
 import com.xiaofo1022.b5235.util.AppProperties;
+import com.xiaofo1022.b5235.util.DateUtil;
 
 @RestController
 @RequestMapping("/report")
@@ -49,5 +52,11 @@ public class ReportController {
       }
     }
     return report;
+  }
+  
+  @RequestMapping(value = "/onday")
+  public List<SReport> oneDay(@RequestParam(value = "userid", defaultValue = "") String wxUserId) {
+    Date today = new Date();
+    return reportDao.findByOndDay(wxUserId, DateUtil.getOneDayStart(today), DateUtil.getOneDayEnd(today));
   }
 }
