@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xiaofo1022.b5235.entity.LeaveMsg;
 import com.xiaofo1022.b5235.entity.SReport;
 import com.xiaofo1022.b5235.model.WeixinSignature;
 import com.xiaofo1022.b5235.model.WeixinToken;
@@ -30,7 +32,7 @@ public class WeixinApiService {
   
   private static final String CORP_ID = "wx66a6e31d9b7df205";
   private static final String CORP_SECRET = "gIAfHxvdQt9mWAkbwLwBfcVSznNDynr__LCVSkXjj9UFvMP2PVRR8eVmOH9iQnYG";
-  private static final int TOKEN_EXPIRED_TIME = 1000 * 60 * 60 * 2;
+  private static final int TOKEN_EXPIRED_TIME = 1000 * 60 * 6 * 18;
   
   private static WeixinToken tokenCache;
   
@@ -64,7 +66,7 @@ public class WeixinApiService {
     return weixinSignature;
   }
   
-  public String getLoginUserId(String code) {
+  public String getWeixinUserId(String code) {
     WeixinToken weixinToken = getWeixinToken();
     if (weixinToken != null) {
       return weixinBaseService.getLoginUserId(code, weixinToken.getAccessToken());
@@ -72,7 +74,7 @@ public class WeixinApiService {
     return null;
   }
   
-  public WeixinUser getLoginUser(String userId) {
+  public WeixinUser getWeixinUser(String userId) {
     WeixinToken weixinToken = getWeixinToken();
     if (weixinToken != null) {
       return weixinBaseService.getUser(weixinToken.getAccessToken(), userId);
@@ -86,15 +88,7 @@ public class WeixinApiService {
     return weixinBaseService.getLoginRedirectUrl(CORP_ID, encodeUrl);
   }
   
-  public void sendTextMessage(SReport report) {
-    WeixinToken weixinToken = getWeixinToken();
-    if (weixinToken != null) {
-      String content = report.getWxUserName() + "正在" + report.getReportAddress() + ": " + report.getReportInfo();
-      weixinBaseService.sendTextMessage(content, weixinToken.getAccessToken());
-    }
-  }
-  
-  public void sendNewsMessage(SReport report) throws IOException {
+  public void sendReportMessage(SReport report) throws IOException {
     WeixinToken weixinToken = getWeixinToken();
     if (weixinToken != null) {
       String accessToken = weixinToken.getAccessToken();
@@ -107,13 +101,40 @@ public class WeixinApiService {
         saveWxImageToServer(accessToken, imgServerId);
         picUrl = appProperties.getImageurl() + imgServerId + ".jpg";
       }
-      weixinBaseService.sendNewsMessage(report.getId(), title, description, picUrl, accessToken);
+      String toparty = getSendToParty(report.getWxUserId(), accessToken);
+      weixinBaseService.sendNewsMessage(report.getId(), title, description, picUrl, null, toparty, accessToken);
     }
+  }
+  
+  private String getSendToParty(String wxUserId, String token) {
+    WeixinUser weixinUser = getWeixinUser(wxUserId);
+    if (weixinUser != null) {
+      Set<Long> departmentIds = weixinUser.getDepartment();
+      String toparty = "";
+      for (Long departmentId : departmentIds) {
+        toparty += (departmentId.toString() + "|");
+      }
+      int toPartyLength = toparty.length();
+      if (toPartyLength > 1) {
+        toparty = toparty.substring(0, toPartyLength - 1);
+      }
+      return toparty;
+    }
+    return "";
   }
   
   private void saveWxImageToServer(String token, String serverId) throws IOException {
     byte[] imageBytes = weixinBaseService.downloadMediaFile(token, serverId);
     String filename = serverId + ".jpg";
     fileUtil.saveImageFileToClasspath(filename, imageBytes);
+  }
+  
+  public void sendMsgMessage(LeaveMsg leaveMsg) {
+    WeixinToken weixinToken = getWeixinToken();
+    if (weixinToken != null) {
+      String accessToken = weixinToken.getAccessToken();
+      String title = leaveMsg.getFromUserName() + "给你留言了";
+      weixinBaseService.sendNewsMessage(leaveMsg.getToReportId(), title, null, null, leaveMsg.getToUserId(), null, accessToken);
+    }
   }
 }

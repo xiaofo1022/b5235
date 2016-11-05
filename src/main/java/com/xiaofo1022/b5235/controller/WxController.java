@@ -35,9 +35,9 @@ public class WxController {
   @RequestMapping("/login")
   public LoginResult login(@RequestParam(value = "code", defaultValue = "") String code, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
     if (code != null && !code.equals("")) {
-      String userId = weixinApi.getLoginUserId(code);
+      String userId = weixinApi.getWeixinUserId(code);
       if (userId != null) {
-        WeixinUser weixinUser = weixinApi.getLoginUser(userId);
+        WeixinUser weixinUser = weixinApi.getWeixinUser(userId);
         if (weixinUser != null) {
           CookieUtil.addCookie(CookieUtil.WX_USER_COOKIE_NAME, userId, response);
           return new LoginResult(weixinUser);
@@ -46,7 +46,7 @@ public class WxController {
     } else {
       String wxUserId = CookieUtil.getCookieValue(CookieUtil.WX_USER_COOKIE_NAME, request);
       if (wxUserId != null && !wxUserId.equals("")) {
-        WeixinUser weixinUser = weixinApi.getLoginUser(wxUserId);
+        WeixinUser weixinUser = weixinApi.getWeixinUser(wxUserId);
         return new LoginResult(weixinUser);
       } else {
         return new LoginResult(302, "", weixinApi.getLoginRedirectUrl(request));

@@ -3,7 +3,10 @@ package com.xiaofo1022.b5235.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +26,10 @@ public class WeixinBaseService {
   private static final String GET_CODE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect";
   private static final String SEND_MESSAGE_URL = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s";
   private static final String DOWNLOAD_MEDIA_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
+  private static final String GET_USER_SIMPLE_LIST = "https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?access_token=%s&department_id=%s&fetch_child=1&status=1";
   
+  private static final Logger logger = LoggerFactory.getLogger(WeixinBaseService.class);
+   
   @Autowired
   private HttpBaseService http;
   @Autowired
@@ -74,7 +80,7 @@ public class WeixinBaseService {
     http.doPost(SEND_MESSAGE_URL, textMessage, token);
   }
   
-  public void sendNewsMessage(long reportId, String title, String description, String picUrl, String token) {
+  public void sendNewsMessage(long reportId, String title, String description, String picUrl, String touser, String toparty, String token) {
     List<Articles> articlesList = new ArrayList<>();
     Articles articles = new Articles();
     articles.title = title;
@@ -85,12 +91,34 @@ public class WeixinBaseService {
     NewsMessage newsMessage = new NewsMessage();
     newsMessage.setAgentid(appProperties.getAgentid_sreport());
     newsMessage.setArticles(articlesList);
-    newsMessage.setTouser("@all");
+    newsMessage.setTouser(touser);
+    newsMessage.setToparty(toparty);
+    if (touser != null) {
+      logger.info("send to user: " + touser);
+    }
+    if (toparty != null) {
+      logger.info("send to party: " + toparty);
+    }
     http.doPost(SEND_MESSAGE_URL, newsMessage, token);
   }
   
   public byte[] downloadMediaFile(String token, String mediaId) {
     String requestUrl = http.getRequestUrl(DOWNLOAD_MEDIA_URL, token, mediaId);
     return http.download(requestUrl);
+  }
+  
+  public List<String> getUserIdsUnderDepartment(Long departmentId, String token) {
+    List<String> userIds = new ArrayList<>();
+    JSONObject jsonObject = http.get(GET_USER_SIMPLE_LIST, token, departmentId.toString());
+    if (jsonObject != null && jsonObject.has("userlist")) {
+      JSONArray jsonArray = jsonObject.getJSONArray("userlist");
+      for (int i = 0; i < jsonArray.length(); i++) {
+        JSONObject userJson = jsonArray.getJSONObject(i);
+        if (userJson != null && userJson.has("userid")) {
+          userIds.add(userJson.getString("userid"));
+        }
+      }
+    }
+    return userIds;
   }
 }

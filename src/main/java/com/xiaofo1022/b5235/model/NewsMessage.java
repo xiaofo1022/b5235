@@ -5,6 +5,7 @@ import java.util.List;
 
 public class NewsMessage {
   private String touser;
+  private String toparty;
   private String msgtype = "news";
   private int agentid;
   private News news = new News();
@@ -35,6 +36,12 @@ public class NewsMessage {
   }
   public void setArticles(List<Articles> articles) {
     this.news.articles = articles;
+  }
+  public String getToparty() {
+    return toparty;
+  }
+  public void setToparty(String toparty) {
+    this.toparty = toparty;
   }
   public String toString() {
     return "touser:" + touser + ", msgtype:" + msgtype + ", agentid:" + agentid + ", content:multi_message";

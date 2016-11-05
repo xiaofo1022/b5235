@@ -115,7 +115,8 @@ function postReport() {
       wx.closeWindow();
     });
   } else {
-    wx.closeWindow();
+    swal('说点什么吧~');
+    $('#report-info').focus();
   }
 }
 

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.common.io.Files;
@@ -11,6 +13,8 @@ import com.google.common.io.Files;
 @Component
 public class FileUtil {
 
+  private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+  
   private static final String PATH_STR = File.separator;
   
   public void saveImageFileToClasspath(String filename, byte[] imageBytes) throws IOException {
@@ -24,6 +28,6 @@ public class FileUtil {
     String imageFilePath = imagepath + PATH_STR + filename;
     File imageFile = new File(imageFilePath);
     Files.write(imageBytes, imageFile);
-    System.out.println("Save image file to: " + imageFilePath);
+    logger.info("Save image file to: " + imageFilePath);
   }
 }

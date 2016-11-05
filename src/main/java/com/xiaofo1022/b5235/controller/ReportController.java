@@ -33,7 +33,7 @@ public class ReportController {
       report.setInsertDatetime(now);
       report.setUpdateDatetime(now);
       reportDao.save(report);
-      weixinApi.sendNewsMessage(report);
+      weixinApi.sendReportMessage(report);
     }
     return "ok";
   }
@@ -42,7 +42,7 @@ public class ReportController {
   public SReport report(@PathVariable long id) {
     SReport report = reportDao.findOne(id);
     if (report != null) {
-      report.setWeixinUser(weixinApi.getLoginUser(report.getWxUserId()));
+      report.setWeixinUser(weixinApi.getWeixinUser(report.getWxUserId()));
       String reportImgServerId = report.getReportImgServerId();
       if (reportImgServerId != null && !reportImgServerId.equals("")) {
         report.setReportImgUrl(appProperties.getImageurl() + reportImgServerId + ".jpg");
