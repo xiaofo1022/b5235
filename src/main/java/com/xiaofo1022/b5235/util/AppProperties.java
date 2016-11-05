@@ -4,16 +4,29 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "wx.url", locations = "classpath:app.properties")
+@ConfigurationProperties(prefix = "app", locations = "classpath:app.properties")
 public class AppProperties {
 
-  private String showmap;
-
-  public String getShowmap() {
-    return showmap;
+  private String showmapurl;
+  private String imageurl;
+  private int agentid_sreport;
+  
+  public String getShowmapurl() {
+    return showmapurl;
   }
-
-  public void setShowmap(String showmap) {
-    this.showmap = showmap;
+  public void setShowmapurl(String showmapurl) {
+    this.showmapurl = showmapurl;
+  }
+  public String getImageurl() {
+    return imageurl;
+  }
+  public void setImageurl(String imageurl) {
+    this.imageurl = imageurl;
+  }
+  public int getAgentid_sreport() {
+    return agentid_sreport;
+  }
+  public void setAgentid_sreport(int agentid_sreport) {
+    this.agentid_sreport = agentid_sreport;
   }
 }

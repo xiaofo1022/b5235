@@ -44,3 +44,13 @@ a:hover {
 .status-stop {
 	color: rgb(193, 193, 193);
 }
+
+.sheader {
+	display: inline-block;
+	width: 60px;
+	height: 60px;
+	border-radius: 30px;
+	border-color: #fff;
+	margin-bottom: 10px;
+}
+	

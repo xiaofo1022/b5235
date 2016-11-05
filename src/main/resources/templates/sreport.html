@@ -7,20 +7,6 @@
 <link th:href="@{css/bootstrap.css}" rel="stylesheet" />
 <link th:href="@{css/sweetalert.css}" rel="stylesheet" />
 <link th:href="@{css/common.css}" rel="stylesheet" />
-<style>
-	.popover-title {
-		background-color: #fff;
-	}
-	
-	.sheader {
-		display: inline-block;
-		width: 60px;
-		height: 60px;
-		border-radius: 30px;
-		border-color: #fff;
-		margin-bottom: 10px;
-	}
-</style>
 <title>小报告</title>
 </head>
 <body style="margin:10px;">
@@ -41,9 +27,8 @@
 	    	<input id="report-address" class="form-control" maxlength="99" />
 	    	<textarea id="report-info" class="form-control" style="margin-top:10px;margin-bottom:10px;" rows="4" maxlength="999" placeholder="做什么?"></textarea>
 	    	<img id="img-selected" style="width:100%;margin-bottom:10px;display:none;" />
-	    	<button id="btn-select-image" class="btn btn-info fleft" onclick="selectImage()">附加图片</button>
 	    	<button id="btn-post" class="btn btn-success fright" onclick="postReport()">发布</button>
-	   		<img id="img-selected" style="width:100%;margin-top:10px;" />
+	    	<button id="btn-select-image" class="btn btn-info fright" style="margin-right:10px;" onclick="selectImage()">贴图</button>
 	   	</div>
 	  </div>
 	</div>

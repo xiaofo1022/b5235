@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.xiaofo1022.b5235.model.WeixinUser;
 
 @Entity
 @Table(name = "sreport")
@@ -27,6 +30,10 @@ public class SReport {
   private String gcjLat;
   private String gcjLng;
   private int isActive = 1;
+  @Transient
+  private WeixinUser weixinUser;
+  @Transient
+  private String reportImgUrl;
   
   public long getId() {
     return id;
@@ -111,5 +118,17 @@ public class SReport {
   }
   public void setReportImgServerId(String reportImgServerId) {
     this.reportImgServerId = reportImgServerId;
+  }
+  public WeixinUser getWeixinUser() {
+    return weixinUser;
+  }
+  public void setWeixinUser(WeixinUser weixinUser) {
+    this.weixinUser = weixinUser;
+  }
+  public String getReportImgUrl() {
+    return reportImgUrl;
+  }
+  public void setReportImgUrl(String reportImgUrl) {
+    this.reportImgUrl = reportImgUrl;
   }
 }

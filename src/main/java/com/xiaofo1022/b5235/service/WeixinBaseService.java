@@ -22,7 +22,7 @@ public class WeixinBaseService {
   private static final String GET_JS_TICKET_URL = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=%s";
   private static final String GET_CODE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s#wechat_redirect";
   private static final String SEND_MESSAGE_URL = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s";
-  private static final int SREPORT_AGENT_ID = 25;
+  private static final String DOWNLOAD_MEDIA_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
   
   @Autowired
   private HttpBaseService http;
@@ -68,24 +68,29 @@ public class WeixinBaseService {
   
   public void sendTextMessage(String content, String token) {
     TextMessage textMessage = new TextMessage();
-    textMessage.setAgentid(SREPORT_AGENT_ID);
+    textMessage.setAgentid(appProperties.getAgentid_sreport());
     textMessage.setTouser("@all");
     textMessage.setContent(content);
     http.doPost(SEND_MESSAGE_URL, textMessage, token);
   }
   
-  public void sendNewsMessage(long reportId, String title, String description, String token) {
+  public void sendNewsMessage(long reportId, String title, String description, String picUrl, String token) {
     List<Articles> articlesList = new ArrayList<>();
     Articles articles = new Articles();
     articles.title = title;
     articles.description = description;
-    articles.url = appProperties.getShowmap() + reportId;
-    System.out.println(articles.url);
+    articles.picurl = picUrl;
+    articles.url = appProperties.getShowmapurl() + reportId;
     articlesList.add(articles);
     NewsMessage newsMessage = new NewsMessage();
-    newsMessage.setAgentid(SREPORT_AGENT_ID);
+    newsMessage.setAgentid(appProperties.getAgentid_sreport());
     newsMessage.setArticles(articlesList);
     newsMessage.setTouser("@all");
     http.doPost(SEND_MESSAGE_URL, newsMessage, token);
+  }
+  
+  public byte[] downloadMediaFile(String token, String mediaId) {
+    String requestUrl = http.getRequestUrl(DOWNLOAD_MEDIA_URL, token, mediaId);
+    return http.download(requestUrl);
   }
 }

@@ -7,7 +7,7 @@
 <link th:href="@{css/bootstrap.css}" rel="stylesheet" />
 <link th:href="@{css/sweetalert.css}" rel="stylesheet" />
 <link th:href="@{css/common.css}" rel="stylesheet" />
-<title>小地图</title>
+<title>小报告</title>
 </head>
 <body style="margin:10px;">
 <div id="loading-bar" class="progress">
@@ -15,9 +15,26 @@
     <span>加载中...</span>
   </div>
 </div>
-<button id="btn-open-map" style="display:none;width:100%;" class="btn btn-success" onclick="openMap()">打开地图</button>
+<div id="report-panel" style="display:none;width:100%;">
+	<div class="panel panel-success">
+	  <div class="panel-heading">
+	    <h3 id="dialog-title" class="panel-title"></h3>
+	  </div>
+	  <div class="panel-body">
+	    <div class="clearfix">
+	    	<img id="header" class="sheader" style="margin-right:10px;" src="" /><span id="username-title"></span>
+	    	<p id="report-address"></p>
+	    	<p id="report-info"></p>
+	   		<img id="img-selected" style="width:100%;margin-bottom:10px;" />
+	   		<button id="btn-open-map" style="width:100%;" class="btn btn-success" onclick="openMap()">打开小地图</button>
+	   	</div>
+	  </div>
+	</div>
+</div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/dateformatter.js}"></script>
+<script th:src="@{js/ajaxutil.js}"></script>
 <script th:src="@{js/wxmap.js}"></script>
 </html>
