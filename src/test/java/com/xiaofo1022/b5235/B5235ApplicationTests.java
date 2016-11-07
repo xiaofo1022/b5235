@@ -13,7 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xiaofo1022.b5235.dao.SReportDao;
 import com.xiaofo1022.b5235.entity.SReport;
+import com.xiaofo1022.b5235.model.ReportDay;
 import com.xiaofo1022.b5235.service.HttpBaseService;
+import com.xiaofo1022.b5235.service.ReportService;
 import com.xiaofo1022.b5235.util.AppProperties;
 import com.xiaofo1022.b5235.util.DateUtil;
 import com.xiaofo1022.b5235.util.FileUtil;
@@ -30,12 +32,28 @@ public class B5235ApplicationTests {
   private AppProperties appProperties;
   @Autowired
   private SReportDao reportDao;
+  @Autowired
+  private ReportService reportService;
+  
+  public void utilTest() {
+    Date now = new Date();
+    String timeInDay = DateUtil.getTimeInDay(now);
+    Assert.assertNotNull(timeInDay);
+    String day = DateUtil.getDay(now);
+    Assert.assertNotNull(day);
+  }
   
   @Test
+  public void serviceTest() {
+    String wxUserId = "yc@nbugs.com";
+    List<ReportDay> reportDays = reportService.getReportDays(wxUserId);
+    Assert.assertNotNull(reportDays);
+  }
+  
   public void reportTest() {
     String wxUserId = "yc@nbugs.com";
     Date today = new Date();
-    List<SReport> reports = reportDao.findByOndDay(wxUserId, DateUtil.getOneDayStart(today), DateUtil.getOneDayEnd(today));
+    List<SReport> reports = reportDao.findByOneDay(wxUserId, DateUtil.getOneDayStart(today), DateUtil.getOneDayEnd(today));
     Assert.assertNotNull(reports);
   }
   

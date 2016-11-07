@@ -4,36 +4,13 @@
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-<title>Hello B5235</title>
+<link rel="icon" href="logo/favicon.ico" type="image/x-icon" /> 
+<link rel="shortcut icon" href="logo/favicon.ico" type="image/x-icon" />
+<title>快来关注你干嘛</title>
 </head>
-<body>
-	<button onclick="showloc()">Show Location</button>
-	<button onclick="sreport()">S Report</button>
+<body style="text-align:center;margin-top:10px;">
+	<img src="logo/barcode.jpeg" style="display:inline-block;" />
 </body>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
-<script th:src="@{js/jquery.min.js}"></script>
 <script>
-	var loc;
-
-	function showloc() {
-	  location.assign('showloc');
-	}
-	
-	function sreport() {
-	  location.assign('sreport');
-	}
-	
-	function openLocation() {
-	  if (loc) {
-	    wx.openLocation({
-		    latitude: loc.latitude,
-		    longitude: loc.longitude,
-		    name: '毛楼',
-		    address: '滨江区海创园五楼高级毛楼',
-		    scale: 14,
-		    infoUrl: ''
-			});
-	  }
-	}
 </script>
 </html>

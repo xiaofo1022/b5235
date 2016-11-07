@@ -57,4 +57,9 @@ a:hover {
 	border-color: #fff;
 	margin-bottom: 10px;
 }
-	
+
+.minheader {
+	width: 32px;
+	margin-right: 5px;
+	border-radius: 4px;
+}

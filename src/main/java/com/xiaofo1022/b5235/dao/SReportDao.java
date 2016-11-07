@@ -13,5 +13,9 @@ import com.xiaofo1022.b5235.entity.SReport;
 public interface SReportDao extends JpaRepository<SReport, Long> {
 
   @Query("from SReport where wxUserId = ?1 and (reportDate between ?2 and ?3) order by reportDate")
-  List<SReport> findByOndDay(String wxUserId, Date startDate, Date endDate);
+  List<SReport> findByOneDay(String wxUserId, Date startDate, Date endDate);
+  
+  List<SReport> findByWxUserId(String wxUserId);
+  
+  List<SReport> findByWxUserIdOrderByReportDateDesc(String wxUserId);
 }

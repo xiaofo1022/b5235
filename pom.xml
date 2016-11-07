@@ -5,7 +5,7 @@
 
 	<groupId>com.xiaofo1022</groupId>
 	<artifactId>xiaofo-b5235</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
 
 	<name>b5235</name>

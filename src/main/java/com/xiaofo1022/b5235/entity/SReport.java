@@ -34,6 +34,8 @@ public class SReport {
   private WeixinUser weixinUser;
   @Transient
   private String reportImgUrl;
+  @Transient
+  private String reportTimeInDay;
   
   public long getId() {
     return id;
@@ -130,5 +132,11 @@ public class SReport {
   }
   public void setReportImgUrl(String reportImgUrl) {
     this.reportImgUrl = reportImgUrl;
+  }
+  public String getReportTimeInDay() {
+    return reportTimeInDay;
+  }
+  public void setReportTimeInDay(String reportTimeInDay) {
+    this.reportTimeInDay = reportTimeInDay;
   }
 }

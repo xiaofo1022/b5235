@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class PageController {
+public class MainController {
 
   @RequestMapping("/")
   public String index() {
@@ -24,5 +24,15 @@ public class PageController {
   @RequestMapping("/wxmap")
   public String wxmap() {
     return "wxmap";
+  }
+  
+  @RequestMapping("/whattheydo")
+  public String whattheydo() {
+    return "whattheydo";
+  }
+  
+  @RequestMapping("/dorecord")
+  public String dorecord() {
+    return "dorecord";
   }
 }

@@ -22,6 +22,7 @@ public class WeixinUser {
   private String weixinid;
   private String avatar = "";
   private int status;
+  private int reportCount;
   
   public WeixinUser() {}
   
@@ -110,5 +111,11 @@ public class WeixinUser {
   }
   public void setWeixinid(String weixinid) {
     this.weixinid = weixinid;
+  }
+  public int getReportCount() {
+    return reportCount;
+  }
+  public void setReportCount(int reportCount) {
+    this.reportCount = reportCount;
   }
 }

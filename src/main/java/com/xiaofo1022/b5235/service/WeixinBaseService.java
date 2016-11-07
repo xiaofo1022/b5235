@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.xiaofo1022.b5235.model.Articles;
 import com.xiaofo1022.b5235.model.NewsMessage;
 import com.xiaofo1022.b5235.model.TextMessage;
+import com.xiaofo1022.b5235.model.WeixinDepartment;
 import com.xiaofo1022.b5235.model.WeixinUser;
 import com.xiaofo1022.b5235.util.AppProperties;
 
@@ -27,6 +28,8 @@ public class WeixinBaseService {
   private static final String SEND_MESSAGE_URL = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s";
   private static final String DOWNLOAD_MEDIA_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
   private static final String GET_USER_SIMPLE_LIST = "https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?access_token=%s&department_id=%s&fetch_child=1&status=1";
+  private static final String GET_DEPARTMENT_LIST = "https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token=%s&id=%s";
+  private static final String GET_USER_DETAIL_LIST = "https://qyapi.weixin.qq.com/cgi-bin/user/list?access_token=%s&department_id=%s&fetch_child=1&status=1";
   
   private static final Logger logger = LoggerFactory.getLogger(WeixinBaseService.class);
    
@@ -120,5 +123,38 @@ public class WeixinBaseService {
       }
     }
     return userIds;
+  }
+  
+  public WeixinDepartment getDepartment(Long departmentId, String token) {
+    JSONObject jsonObject = http.get(GET_DEPARTMENT_LIST, token, departmentId.toString());
+    if (jsonObject != null && jsonObject.has("department")) {
+      JSONObject departmentJson = jsonObject.getJSONArray("department").getJSONObject(0);
+      if (departmentJson != null) {
+        WeixinDepartment weixinDepartment = new WeixinDepartment(departmentJson);
+        List<WeixinUser> weixinUsers = getWeixinUserList(departmentId, token);
+        for (WeixinUser weixinUser : weixinUsers) {
+          weixinDepartment.addWeixinUser(weixinUser);
+        }
+        return weixinDepartment;
+      }
+    }
+    return null;
+  }
+  
+  public List<WeixinUser> getWeixinUserList(Long departmentId, String token) {
+    List<WeixinUser> weixinUsers = new ArrayList<>();
+    JSONObject jsonObject = http.get(GET_USER_DETAIL_LIST, token, departmentId.toString());
+    if (jsonObject != null && jsonObject.has("userlist")) {
+      JSONArray userJsons = jsonObject.getJSONArray("userlist");
+      if (userJsons != null) {
+        for (int i = 0; i < userJsons.length(); i++) {
+          JSONObject userJson = userJsons.getJSONObject(i);
+          if (userJson != null) {
+            weixinUsers.add(new WeixinUser(userJson));
+          }
+        }
+      }
+    }
+    return weixinUsers;
   }
 }

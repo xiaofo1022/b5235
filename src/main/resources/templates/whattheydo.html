@@ -7,7 +7,7 @@
 <link th:href="@{css/bootstrap.css}" rel="stylesheet" />
 <link th:href="@{css/sweetalert.css}" rel="stylesheet" />
 <link th:href="@{css/common.css}" rel="stylesheet" />
-<title>我这一天</title>
+<title>都在干嘛</title>
 </head>
 <body style="margin:10px;">
 <div id="loading-bar" class="progress">
@@ -15,22 +15,11 @@
     <span>加载中...</span>
   </div>
 </div>
-<div id="report-dialog" style="text-align:center;display:none;">
-	<img id="header" class="sheader" src="" />
-	<div class="panel panel-success">
-	  <div class="panel-heading">
-	    <h3 id="dialog-title" class="panel-title"></h3>
-	  </div>
-	  <div class="panel-body">
-	    <div class="clearfix">
-	   	</div>
-	  </div>
-	</div>
-</div>
+<div id="report-dialog" style="display:none;"></div>
 <script th:src="@{js/jquery.min.js}"></script>
 <script th:src="@{js/dateformatter.js}"></script>
 <script th:src="@{js/ajaxutil.js}"></script>
 <script th:src="@{js/wxlogin.js}"></script>
-<script th:src="@{js/myday.js}"></script>
+<script th:src="@{js/whattheydo.js}"></script>
 </body>
 </html>

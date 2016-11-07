@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.xiaofo1022.b5235.entity.LeaveMsg;
 import com.xiaofo1022.b5235.entity.SReport;
+import com.xiaofo1022.b5235.model.WeixinDepartment;
 import com.xiaofo1022.b5235.model.WeixinSignature;
 import com.xiaofo1022.b5235.model.WeixinToken;
 import com.xiaofo1022.b5235.model.WeixinUser;
@@ -136,5 +137,13 @@ public class WeixinApiService {
       String title = leaveMsg.getFromUserName() + "给你留言了";
       weixinBaseService.sendNewsMessage(leaveMsg.getToReportId(), title, null, null, leaveMsg.getToUserId(), null, accessToken);
     }
+  }
+  
+  public WeixinDepartment getWeixinDepartment(Long departmentId) {
+    WeixinToken weixinToken = getWeixinToken();
+    if (weixinToken != null) {
+      return weixinBaseService.getDepartment(departmentId, weixinToken.getAccessToken());
+    }
+    return null;
   }
 }

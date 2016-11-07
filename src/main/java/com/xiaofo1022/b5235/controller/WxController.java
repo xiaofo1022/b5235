@@ -54,4 +54,9 @@ public class WxController {
     }
     return null;
   }
+  
+  @RequestMapping("/user")
+  public WeixinUser getUser(@RequestParam(value = "userid", defaultValue = "") String userId) {
+    return weixinApi.getWeixinUser(userId);
+  }
 }

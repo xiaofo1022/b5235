@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaofo1022.b5235.dao.SReportDao;
 import com.xiaofo1022.b5235.entity.SReport;
+import com.xiaofo1022.b5235.model.ReportDay;
+import com.xiaofo1022.b5235.model.WeixinDepartment;
+import com.xiaofo1022.b5235.service.ReportService;
 import com.xiaofo1022.b5235.service.WeixinApiService;
 import com.xiaofo1022.b5235.util.AppProperties;
 import com.xiaofo1022.b5235.util.DateUtil;
@@ -26,6 +29,8 @@ public class ReportController {
   private SReportDao reportDao;
   @Autowired
   private WeixinApiService weixinApi;
+  @Autowired
+  private ReportService reportService;
   @Autowired
   private AppProperties appProperties;
   
@@ -57,6 +62,16 @@ public class ReportController {
   @RequestMapping(value = "/onday")
   public List<SReport> oneDay(@RequestParam(value = "userid", defaultValue = "") String wxUserId) {
     Date today = new Date();
-    return reportDao.findByOndDay(wxUserId, DateUtil.getOneDayStart(today), DateUtil.getOneDayEnd(today));
+    return reportDao.findByOneDay(wxUserId, DateUtil.getOneDayStart(today), DateUtil.getOneDayEnd(today));
+  }
+  
+  @RequestMapping(value = "/whattheydo")
+  public List<WeixinDepartment> getWhatTheyDo(@RequestParam(value = "userid", defaultValue = "") String wxUserId) {
+    return reportService.getFriendsList(wxUserId);
+  }
+  
+  @RequestMapping(value = "/reportdays")
+  public List<ReportDay> getReportDays(@RequestParam(value = "userid", defaultValue = "") String wxUserId) {
+    return reportService.getReportDays(wxUserId);
   }
 }
