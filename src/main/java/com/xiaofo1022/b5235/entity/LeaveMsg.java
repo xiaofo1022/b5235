@@ -20,6 +20,7 @@ public class LeaveMsg {
   private String fromUserId;
   private String fromUserName;
   private String toUserId;
+  private String toUserName;
   private long toReportId;
   private int isActive = 1;
   
@@ -76,5 +77,11 @@ public class LeaveMsg {
   }
   public void setIsActive(int isActive) {
     this.isActive = isActive;
+  }
+  public String getToUserName() {
+    return toUserName;
+  }
+  public void setToUserName(String toUserName) {
+    this.toUserName = toUserName;
   }
 }

@@ -11,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.xiaofo1022.b5235.dao.LeaveMsgDao;
 import com.xiaofo1022.b5235.dao.SReportDao;
+import com.xiaofo1022.b5235.entity.LeaveMsg;
 import com.xiaofo1022.b5235.entity.SReport;
 import com.xiaofo1022.b5235.model.ReportDay;
+import com.xiaofo1022.b5235.model.WeixinUser;
 import com.xiaofo1022.b5235.service.HttpBaseService;
 import com.xiaofo1022.b5235.service.ReportService;
+import com.xiaofo1022.b5235.service.WeixinApiService;
 import com.xiaofo1022.b5235.util.AppProperties;
 import com.xiaofo1022.b5235.util.DateUtil;
 import com.xiaofo1022.b5235.util.FileUtil;
@@ -33,7 +37,23 @@ public class B5235ApplicationTests {
   @Autowired
   private SReportDao reportDao;
   @Autowired
+  private LeaveMsgDao leaveMsgDao;
+  @Autowired
   private ReportService reportService;
+  @Autowired
+  private WeixinApiService weixinApi;
+  
+  @Test
+  public void leaveMsgTest() {
+    List<LeaveMsg> leaveMsgs = leaveMsgDao.findAll();
+    for (LeaveMsg leaveMsg : leaveMsgs) {
+      WeixinUser weixinUser = weixinApi.getWeixinUser(leaveMsg.getToUserId());
+      if (weixinUser != null && leaveMsg.getToUserName() == null) {
+        leaveMsg.setToUserName(weixinUser.getName());
+        leaveMsgDao.save(leaveMsg);
+      }
+    }
+  }
   
   public void utilTest() {
     Date now = new Date();
@@ -43,7 +63,6 @@ public class B5235ApplicationTests {
     Assert.assertNotNull(day);
   }
   
-  @Test
   public void serviceTest() {
     String wxUserId = "yc@nbugs.com";
     List<ReportDay> reportDays = reportService.getReportDays(wxUserId);

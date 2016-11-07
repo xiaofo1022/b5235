@@ -4,6 +4,7 @@
 
 var report;
 var replyUserId;
+var replyUserName;
 
 dologin();
 
@@ -34,11 +35,18 @@ function initLeaveMsgData() {
     if (msgs) {
       $('#msg-block').html('');
       var msgBlockHtml = '';
+      var reportUserId = report.wxUserId;
       for (var i in msgs) {
         var lineHtml = '<p>';
         var msg = msgs[i];
-        lineHtml += ('<span class="mr-10">' + msg.fromUserName + '说: ' + msg.msg + '</span>');
-        lineHtml += ('<a onclick="replyMsg(\'' + msg.fromUserId + '\')">回复</a>');
+        var fromUserId = msg.fromUserId;
+        var toUserId = msg.toUserId;
+        if (toUserId == reportUserId) {
+          lineHtml += ('<span class="mr-10">' + msg.fromUserName + '说: ' + msg.msg + '</span>');
+        } else {
+          lineHtml += ('<span class="mr-10">' + msg.fromUserName + '回复' + msg.toUserName + ': ' + msg.msg + '</span>');
+        }
+        lineHtml += ('<a onclick="replyMsg(\'' + msg.fromUserId + '\', \'' + msg.fromUserName + '\')">回复</a>');
         lineHtml += '</p>';
         msgBlockHtml += lineHtml;
       }
@@ -48,8 +56,9 @@ function initLeaveMsgData() {
   });
 }
 
-function replyMsg(toUserId) {
+function replyMsg(toUserId, toUserName) {
   replyUserId = toUserId;
+  replyUserName = toUserName;
   $('#leave-msg').focus();
   $('#btn-msg').text('回复');
 }
@@ -90,13 +99,13 @@ function doLeaveMsg() {
   $('#btn-msg').attr('disabled', 'disabled');
   $('#btn-msg').text('发送中');
   if (replyUserId) {
-    postMsg(replyUserId);
+    postMsg(replyUserId, replyUserName);
   } else {
-    postMsg(report.wxUserId);
+    postMsg(report.wxUserId, report.wxUserName);
   }
 }
 
-function postMsg(toUserId) {
+function postMsg(toUserId, toUserName) {
   var msgInfo = $('#leave-msg').val();
   if (msgInfo) {
     var leaveMsg = {};
@@ -104,6 +113,7 @@ function postMsg(toUserId) {
     leaveMsg.fromUserId = loginUser.userid;
     leaveMsg.fromUserName = loginUser.name;
     leaveMsg.toUserId = toUserId;
+    leaveMsg.toUserName = toUserName;
     leaveMsg.toReportId = report.id;
     AjaxUtil.post('msg/leave', leaveMsg, function(result) {
       location.reload();
