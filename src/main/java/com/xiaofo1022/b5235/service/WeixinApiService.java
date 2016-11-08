@@ -102,7 +102,12 @@ public class WeixinApiService {
         saveWxImageToServer(accessToken, imgServerId);
         picUrl = appProperties.getImageurl() + imgServerId + ".jpg";
       }
-      String toparty = getSendToParty(report.getWxUserId(), accessToken);
+      String toparty = "";
+      if (report.getToparty() != null && !report.getToparty().equals("")) {
+        toparty = report.getToparty();
+      } else {
+        toparty = getSendToParty(report.getWxUserId(), accessToken);
+      }
       weixinBaseService.sendNewsMessage(report.getId(), title, description, picUrl, null, toparty, accessToken);
     }
   }
@@ -136,6 +141,15 @@ public class WeixinApiService {
       String accessToken = weixinToken.getAccessToken();
       String title = leaveMsg.getFromUserName() + "给你留言了";
       weixinBaseService.sendNewsMessage(leaveMsg.getToReportId(), title, null, null, leaveMsg.getToUserId(), null, accessToken);
+    }
+  }
+  
+  public void sendReplyMessage(LeaveMsg leaveMsg, String reportUserId) {
+    WeixinToken weixinToken = getWeixinToken();
+    if (weixinToken != null) {
+      String accessToken = weixinToken.getAccessToken();
+      String title = leaveMsg.getFromUserName() + "回复了" + leaveMsg.getToUserName();
+      weixinBaseService.sendNewsMessage(leaveMsg.getToReportId(), title, null, null, reportUserId, null, accessToken);
     }
   }
   

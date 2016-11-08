@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaofo1022.b5235.dao.LeaveMsgDao;
+import com.xiaofo1022.b5235.dao.SReportDao;
 import com.xiaofo1022.b5235.entity.LeaveMsg;
+import com.xiaofo1022.b5235.entity.SReport;
 import com.xiaofo1022.b5235.service.WeixinApiService;
 
 @RestController
@@ -20,6 +22,8 @@ public class MsgController {
 
   @Autowired
   private LeaveMsgDao leaveMsgDao;
+  @Autowired
+  private SReportDao reportDao;
   @Autowired
   private WeixinApiService weixinApi;
   
@@ -31,6 +35,14 @@ public class MsgController {
       leaveMsg.setUpdateDatetime(now);
       leaveMsgDao.save(leaveMsg);
       weixinApi.sendMsgMessage(leaveMsg);
+      SReport report = reportDao.findOne(leaveMsg.getToReportId());
+      if (report != null) {
+        String reportUserId = report.getWxUserId();
+        String toUserId = leaveMsg.getToUserId();
+        if (!reportUserId.equals(toUserId)) {
+          weixinApi.sendReplyMessage(leaveMsg, reportUserId);
+        }
+      }
     }
     return "ok";
   }

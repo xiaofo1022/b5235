@@ -36,6 +36,8 @@ public class SReport {
   private String reportImgUrl;
   @Transient
   private String reportTimeInDay;
+  @Transient
+  private String toparty;
   
   public long getId() {
     return id;
@@ -138,5 +140,11 @@ public class SReport {
   }
   public void setReportTimeInDay(String reportTimeInDay) {
     this.reportTimeInDay = reportTimeInDay;
+  }
+  public String getToparty() {
+    return toparty;
+  }
+  public void setToparty(String toparty) {
+    this.toparty = toparty;
   }
 }

@@ -44,6 +44,15 @@ public class B5235ApplicationTests {
   private WeixinApiService weixinApi;
   
   @Test
+  public void leaveMsgDaoTest() {
+    LeaveMsg msg = leaveMsgDao.findOne(148L);
+    Assert.assertNotNull(msg);
+    LeaveMsg newMsg = new LeaveMsg();
+    newMsg.setMsg("\\xF0\\x9F\\xA4\\x94");
+    leaveMsgDao.save(newMsg);
+    Assert.assertNotNull(newMsg);
+  }
+  
   public void leaveMsgTest() {
     List<LeaveMsg> leaveMsgs = leaveMsgDao.findAll();
     for (LeaveMsg leaveMsg : leaveMsgs) {

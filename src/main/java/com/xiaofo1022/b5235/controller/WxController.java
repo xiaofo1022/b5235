@@ -1,6 +1,9 @@
 package com.xiaofo1022.b5235.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaofo1022.b5235.model.LoginResult;
+import com.xiaofo1022.b5235.model.WeixinDepartment;
 import com.xiaofo1022.b5235.model.WeixinSignature;
 import com.xiaofo1022.b5235.model.WeixinToken;
 import com.xiaofo1022.b5235.model.WeixinUser;
@@ -58,5 +62,21 @@ public class WxController {
   @RequestMapping("/user")
   public WeixinUser getUser(@RequestParam(value = "userid", defaultValue = "") String userId) {
     return weixinApi.getWeixinUser(userId);
+  }
+  
+  @RequestMapping("/departments")
+  public List<WeixinDepartment> getDepartments(@RequestParam(value = "userid", defaultValue = "") String userId) {
+    List<WeixinDepartment> departments = new ArrayList<>();
+    WeixinUser weixinUser = weixinApi.getWeixinUser(userId);
+    if (weixinUser != null) {
+      Set<Long> departmentIds = weixinUser.getDepartment();
+      for (Long departmentId : departmentIds) {
+        WeixinDepartment weixinDepartment = weixinApi.getWeixinDepartment(departmentId);
+        if (weixinDepartment != null) {
+          departments.add(weixinDepartment);
+        }
+      }
+    }
+    return departments;
   }
 }

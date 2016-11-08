@@ -10,7 +10,18 @@
 </head>
 <body style="text-align:center;margin-top:10px;">
 	<img src="logo/barcode.jpeg" style="display:inline-block;" />
+	<div id="test">
+		<button>1</button>
+		<button>2</button>
+		<button>3</button>
+	</div>
 </body>
+<script th:src="@{js/jquery.min.js}"></script>
 <script>
+	test();
+	function test() {
+	  var buttons = $('#test').find('button');
+	  console.log(buttons);
+	}
 </script>
 </html>

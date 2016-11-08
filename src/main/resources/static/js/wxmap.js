@@ -3,8 +3,8 @@
  */
 
 var report;
-var replyUserId;
-var replyUserName;
+var replyUserId = null;
+var replyUserName = null;
 
 dologin();
 
@@ -46,7 +46,11 @@ function initLeaveMsgData() {
         } else {
           lineHtml += ('<span class="mr-10">' + msg.fromUserName + '回复' + msg.toUserName + ': ' + msg.msg + '</span>');
         }
-        lineHtml += ('<a onclick="replyMsg(\'' + msg.fromUserId + '\', \'' + msg.fromUserName + '\')">回复</a>');
+        if (fromUserId == reportUserId) {
+          lineHtml += ('<a onclick="replyMsg(\'' + msg.toUserId + '\', \'' + msg.toUserName + '\')">回复</a>');
+        } else {
+          lineHtml += ('<a onclick="replyMsg(\'' + msg.fromUserId + '\', \'' + msg.fromUserName + '\')">回复</a>');
+        }
         lineHtml += '</p>';
         msgBlockHtml += lineHtml;
       }
@@ -60,7 +64,7 @@ function replyMsg(toUserId, toUserName) {
   replyUserId = toUserId;
   replyUserName = toUserName;
   $('#leave-msg').focus();
-  $('#btn-msg').text('回复');
+  $('#btn-msg').text('回复' + replyUserName);
 }
 
 function initDialog() {
@@ -97,8 +101,8 @@ function getRequestParam(name) {
 
 function doLeaveMsg() {
   $('#btn-msg').attr('disabled', 'disabled');
-  $('#btn-msg').text('发送中');
-  if (replyUserId) {
+  $('#btn-msg').text('发送中...');
+  if (replyUserId != null) {
     postMsg(replyUserId, replyUserName);
   } else {
     postMsg(report.wxUserId, report.wxUserName);
@@ -119,4 +123,12 @@ function postMsg(toUserId, toUserName) {
       location.reload();
     });
   }
+}
+
+function previewImage() {
+  var imageSrc = $('#img-selected').attr('src');
+  wx.previewImage({
+    current: '',
+    urls: [imageSrc]
+  });
 }

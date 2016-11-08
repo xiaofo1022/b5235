@@ -11,7 +11,7 @@ public class WeixinSignature {
   private long timestamp;
   private String nonceStr;
   private String signature;
-  private String[] jsApiList = new String[] { "getLocation", "openLocation", "closeWindow", "chooseImage", "uploadImage", "downloadImage" };
+  private String[] jsApiList = new String[] { "getLocation", "openLocation", "closeWindow", "chooseImage", "uploadImage", "downloadImage", "previewImage" };
   
   public WeixinSignature(String appId) {
     this(appId, false);
