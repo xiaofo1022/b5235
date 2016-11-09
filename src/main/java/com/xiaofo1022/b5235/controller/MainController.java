@@ -35,4 +35,9 @@ public class MainController {
   public String dorecord() {
     return "dorecord";
   }
+  
+  @RequestMapping("/membermanage")
+  public String membermanage() {
+    return "membermanage";
+  }
 }
