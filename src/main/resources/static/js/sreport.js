@@ -101,7 +101,7 @@ function initGroupBlock() {
       var groupHtml = '';
       for (var i in departments) {
         var department = departments[i];
-        var btnHtml = '<button id="' + department.id + '" type="button" class="btn btn-info btn-md btn-send-group fright" style="margin-left:5px;" onclick="changeGroupButtonStatus(this)">' + department.name + '<span class="glyphicon glyphicon-ok"></span></button>';
+        var btnHtml = '<button id="' + department.id + '" type="button" class="btn btn-info btn-md btn-send-group fright" style="margin-left:5px;margin-top:5px;" onclick="changeGroupButtonStatus(this)">' + department.name + '<span class="glyphicon glyphicon-ok"></span></button>';
         groupHtml += btnHtml;
       }
       $('#group-block').html(groupHtml);

@@ -36,6 +36,7 @@ function initLeaveMsgData() {
       $('#msg-block').html('');
       var msgBlockHtml = '';
       var reportUserId = report.wxUserId;
+      var loginUserId = loginUser.userid;
       for (var i in msgs) {
         var lineHtml = '<p>';
         var msg = msgs[i];
@@ -46,7 +47,7 @@ function initLeaveMsgData() {
         } else {
           lineHtml += ('<span class="mr-10">' + msg.fromUserName + '回复' + msg.toUserName + ': ' + msg.msg + '</span>');
         }
-        if (fromUserId == reportUserId) {
+        if (fromUserId == loginUserId) {
           lineHtml += ('<a onclick="replyMsg(\'' + msg.toUserId + '\', \'' + msg.toUserName + '\')">回复</a>');
         } else {
           lineHtml += ('<a onclick="replyMsg(\'' + msg.fromUserId + '\', \'' + msg.fromUserName + '\')">回复</a>');
