@@ -1,9 +1,8 @@
 package com.xiaofo1022.b5235.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import com.xiaofo1022.b5235.cache.WeixinCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,16 @@ public class ReportService {
   private SReportDao reportDao;
   @Autowired
   private WeixinApiService weixinApi;
-  
+  @Autowired
+  private WeixinCache weixinCache;
+
   public List<WeixinDepartment> getFriendsList(String wxUserId) {
     List<WeixinDepartment> departments = new ArrayList<>();
-    WeixinUser weixinUser = weixinApi.getWeixinUser(wxUserId);
+    WeixinUser weixinUser = weixinCache.getWeixinUser(wxUserId);
     if (weixinUser != null) {
       Set<Long> userDepartments = weixinUser.getDepartment();
       for (Long departmentId : userDepartments) {
-        WeixinDepartment department = weixinApi.getWeixinDepartment(departmentId);
+        WeixinDepartment department = weixinCache.getWeixinDepartment(departmentId);
         if (department != null) {
           departments.add(department);
         }
@@ -37,7 +38,9 @@ public class ReportService {
     for (WeixinDepartment weixinDepartment : departments) {
       List<WeixinUser> weixinUsers = weixinDepartment.getWeixinUserList();
       for (WeixinUser wxuser : weixinUsers) {
-        wxuser.setReportCount(getReportCount(wxuser.getUserid()));
+        String wuid = wxuser.getUserid();
+        int reportCount = weixinCache.getReportCount(wuid);
+        wxuser.setReportCount(reportCount);
       }
     }
     return departments;
