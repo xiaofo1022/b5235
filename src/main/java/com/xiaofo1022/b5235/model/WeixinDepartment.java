@@ -1,13 +1,14 @@
 package com.xiaofo1022.b5235.model;
 
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
-
-public class WeixinDepartment {
+public class WeixinDepartment implements Serializable {
 
   private long id;
   private String name;

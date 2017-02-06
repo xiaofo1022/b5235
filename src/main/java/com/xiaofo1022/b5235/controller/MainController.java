@@ -10,7 +10,12 @@ public class MainController {
   public String index() {
     return "index";
   }
-  
+
+  @RequestMapping("/react")
+  public String react() {
+    return "react";
+  }
+
   @RequestMapping("/showloc")
   public String showloc() {
     return "showloc";

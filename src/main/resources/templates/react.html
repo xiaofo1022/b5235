@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>React</title>
+  <style>
+    .header-on {
+      border: 1px solid red;
+    }
+  </style>
+</head>
+<body>
+<div id="example"></div>
+<script>
+  let name = 'xiaofo';
+  if (name == 'xiaofo') {
+    let name = 'shit';
+  }
+  console.log(name);
+
+  class Person {
+    constructor(name) {
+      this.name = name;
+    }
+    says() {
+      console.log(this.name + ' says: fuck you!');
+    }
+  }
+
+  let person = new Person(name);
+  person.says();
+</script>
+<script th:src="@{/js/react.min.js}"></script>
+<script th:src="@{/js/react-dom.min.js}"></script>
+<script th:src="@{/js/babel.min.js}"></script>
+<script type="text/babel">
+
+  var Hello = React.createClass({
+    render: function() {
+      return <div>Hello {this.props.name}</div>;
+    }
+  });
+
+  var todolist = {
+    name: "todos",
+    todos: [{
+      completed: false,
+      title: 'finish exercise'
+    }, {
+      completed: false,
+      title: 'lean jsx'
+    }, {
+      completed: true,
+      title: 'lean react'
+    }]
+  };
+
+  var TodoHeader = React.createClass({
+    getInitialState: function() {
+      return { lighton: false };
+    },
+    render: function() {
+      var headerClass = '';
+      if (this.state.lighton) {
+        headerClass = 'header-on';
+      }
+      return <h3 className={headerClass}>{todolist.name}</h3>;
+    },
+    switchLight: function() {
+      var on = this.state.lighton;
+      this.setState({ lighton: !on });
+    }
+  });
+
+  var TodoFooter = React.createClass({
+    render: function () {
+      return <footer><button onClick={this.props.switchLight}>Switch</button></footer>;
+    }
+  });
+
+  var TodoItem = React.createClass({
+    render: function () {
+      var data = this.props.data;
+      return <li key={data.i}>
+              <input type="checkbox" checked={data.checked}/>
+              <span>{data.title}</span>
+             </li>
+    }
+  });
+
+  var TodoList = React.createClass({
+    render: function () {
+      return <ul>
+              <li>What needs to be done?</li>
+              {
+                todolist.todos.map(function (todo, i) {
+                  let checked = false;
+                  if (todo.completed) {
+                    checked = true;
+                  }
+                  var itemData = { i: i, checked: checked, title: todo.title };
+                  return <TodoItem data={itemData} />
+                })
+              }
+             </ul>;
+    }
+  });
+
+  var TodoWindow = React.createClass({
+    render: function() {
+      return <div>
+              <TodoHeader />
+              <TodoList />
+              <TodoFooter />
+            </div>;
+    }
+  });
+
+  ReactDOM.render(
+    <TodoWindow name="World" />,
+    document.getElementById('example')
+  );
+</script>
+</body>
+</html>

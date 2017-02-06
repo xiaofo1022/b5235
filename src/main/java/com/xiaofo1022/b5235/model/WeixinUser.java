@@ -1,16 +1,17 @@
 package com.xiaofo1022.b5235.model;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author yc@nbugs.com
  * @since 2016-04-20
  */
-public class WeixinUser {
+public class WeixinUser implements Serializable {
 
   private String userid;
   private String name;
