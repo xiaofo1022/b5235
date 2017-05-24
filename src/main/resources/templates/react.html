@@ -60,13 +60,13 @@
       return { lighton: false };
     },
     render: function() {
-      var headerClass = '';
+      var style = {};
       if (this.state.lighton) {
-        headerClass = 'header-on';
+        style = { border: '1px solid red' };
       }
-      return <h3 className={headerClass}>{todolist.name}</h3>;
+      return <h3 style={style} onClick={this.onClick}>{todolist.name}</h3>;
     },
-    switchLight: function() {
+    onClick: function () {
       var on = this.state.lighton;
       this.setState({ lighton: !on });
     }
@@ -74,7 +74,11 @@
 
   var TodoFooter = React.createClass({
     render: function () {
-      return <footer><button onClick={this.props.switchLight}>Switch</button></footer>;
+      return <footer><button ref="btn" onClick={this.switchHeader}>Switch</button></footer>;
+    },
+    switchHeader: function () {
+      console.log('Click button');
+      todolist.todos.push({ title: 'new control', complete: true });
     }
   });
 
@@ -82,7 +86,7 @@
     render: function () {
       var data = this.props.data;
       return <li key={data.i}>
-              <input type="checkbox" checked={data.checked}/>
+              <input type="checkbox" defaultChecked={data.checked} />
               <span>{data.title}</span>
              </li>
     }
@@ -112,7 +116,7 @@
               <TodoHeader />
               <TodoList />
               <TodoFooter />
-            </div>;
+             </div>;
     }
   });
 

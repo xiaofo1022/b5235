@@ -16,6 +16,11 @@ public class MainController {
     return "react";
   }
 
+  @RequestMapping("/vue")
+  public String vue() {
+    return "vue";
+  }
+
   @RequestMapping("/showloc")
   public String showloc() {
     return "showloc";
